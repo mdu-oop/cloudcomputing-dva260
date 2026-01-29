@@ -30,7 +30,7 @@ def store_data():
    conn.commit()
    conn.close()
 
-   result = "Temperate " + data + " stored: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+   result = "Temperate " + str(data) + " stored: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S")
    return result
 
 @app.route('/show_data')
