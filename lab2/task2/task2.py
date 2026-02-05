@@ -4,7 +4,7 @@ from flask import Flask, request
 from datetime import datetime
 
 
-DATABASE = 'test.db'
+DATABASE = 'task2.db'
 
 def get_db():
    db = getattr(g,'_database', None)
@@ -24,11 +24,10 @@ def close_connection(exception):
 def store_data():
    data = request.args.get('data', default=0, type=int)
 
-   conn = sqlite3.connect('task2.db')
+   conn = get_db()
    conn.execute(f'''INSERT INTO TASK2 (TEMPERATURE,DATE)
       VALUES ("{data}", datetime('now'));''')
    conn.commit()
-   conn.close()
 
    result = "Temperate " + str(data) + " stored: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S")
    return result
@@ -36,14 +35,14 @@ def store_data():
 @app.route('/show_data')
 def show_data():
     result = ""
-    conn = sqlite3.connect('task2.db')
+    conn = get_db()
     for row in conn.execute('''SELECT TEMPERATURE, DATE FROM TASK2'''):
         result += str(row[0]) + "°C on " + str(row[1]) + "<br>"
     return result
 
 @app.route('/show_stats')
 def show_stats():
-    conn = sqlite3.connect('task2.db')
+    conn = get_db()
     rows = conn.execute('''SELECT  MIN(TEMPERATURE), MAX(TEMPERATURE), AVG(TEMPERATURE) FROM TASK2''')
     for row in rows:
         avg_temp = round(row[2], 2)

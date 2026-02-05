@@ -3,28 +3,18 @@ import urllib.request
 import random
 from time import sleep
 
-base = "http://127.0.0.1:8080/store"
-params = {"data": "25"}
-
-url = base + "?" + urllib.parse.urlencode(params)
-
-req = urllib.request.Request(
-    url,
-    headers={"User-Agent": "MyClient/1.0"},
-    method="GET",
-)
+base = 'http://127.0.0.1:8080/store'
+user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
+headers = {'User-Agent': user_agent}
 
 while True:
-    temp_rand = random.randint(1, 10) 
-    params = {"data": str(temp_rand)}
-    url = base + "?" + urllib.parse.urlencode(params)
-
-    req = urllib.request.Request(
-        url,
-        headers={"User-Agent": "MyClient/1.0"},
-        method="GET",
-    )
+    temp_rand = random.randint(-30, 30)
+    values = {'data': str(temp_rand)}
+    
+    url = base + '?' + urllib.parse.urlencode(values)
+    req = urllib.request.Request(url, headers=headers)
+    
     sleep(1)
-    with urllib.request.urlopen(req) as resp:
-        body = resp.read().decode("utf-8")
-        print(resp.status, body)
+    with urllib.request.urlopen(req) as response:
+        the_page = response.read()
+        print(response.status, the_page.decode('utf-8'))
