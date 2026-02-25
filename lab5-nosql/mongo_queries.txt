@@ -1,0 +1,48 @@
+db.users.find({})
+
+Link:
+https://mongoplayground.net/p/Jb2AF8_IIXg
+
+--------------------------
+
+db.users.find({},
+{
+  _id: 0,
+  profileName: 1
+})
+
+Link:
+https://mongoplayground.net/p/jpcUIf-X2_I
+
+--------------------------
+
+db.users.find({
+  "friendsList.4": {
+    $exists: false
+  }
+},
+{
+  _id: 0,
+  profileName: 1
+})
+
+Link:
+https://mongoplayground.net/p/iHXmUPNH4MN
+
+--------------------------
+
+db.users.aggregate([
+  {
+    $match: {
+      "friendsList.4": {
+        $exists: true
+      }
+    }
+  },
+  {
+    $count: "result"
+  }
+])
+
+Link:
+https://mongoplayground.net/p/GINv06k_MGf
